@@ -19,9 +19,23 @@ namespace GroupProjectWPF.Search
     /// </summary>
     public partial class wndSearch : Window
     {
+        clsSearchLogic logic = new clsSearchLogic();
+
         public wndSearch()
         {
             InitializeComponent();
+            PopulateCmbo();
+            PopulateTxtBox();
+        }
+
+        public void PopulateCmbo()
+        {
+            
+        }
+
+        public void PopulateTxtBox()
+        {
+            txtInvoices.ItemsSource = logic.GetInvoices();
         }
     }
 }

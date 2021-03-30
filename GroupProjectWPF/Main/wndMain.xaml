@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="wndMain" Height="450" Width="800">
     <Grid>
-        
+        <Button Content="Search" HorizontalAlignment="Left" Height="39" Margin="101,255,0,0" VerticalAlignment="Top" Width="100" FontFamily="SimSun" FontSize="16" Click="Button_Click"/>
+
     </Grid>
 </Window>

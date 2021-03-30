@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GroupProjectWPF.Search;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,14 @@ namespace GroupProjectWPF.Main
         public wndMain()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            wndSearch SearchWnd = new wndSearch();
+            SearchWnd.Activate();
+            SearchWnd.Show();
+            this.Hide();
         }
     }
 }
