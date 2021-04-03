@@ -11,12 +11,12 @@
         <Label x:Name="lblInvoices" Content="Invoices" HorizontalAlignment="Left" Margin="760,66,0,0" VerticalAlignment="Top" FontFamily="SimSun" FontSize="16" RenderTransformOrigin="0.554,1.304"/>
         <Label x:Name="lblFilterInvoices" Content="Filter Invoices" HorizontalAlignment="Left" Margin="418,120,0,0" VerticalAlignment="Top" FontFamily="SimSun" FontSize="16"/>
         <Label Content="Invoice Number" HorizontalAlignment="Left" Margin="294,186,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="SimSun" RenderTransformOrigin="0.519,0.462"/>
-        <ComboBox x:Name="cmbInvoiceNum" HorizontalAlignment="Left" Margin="428,190,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="cmbInvoiceNum" HorizontalAlignment="Left" Margin="428,190,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cmbInvoiceNum_SelectionChanged"/>
         <Label Content="Date:" HorizontalAlignment="Left" Margin="294,246,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="SimSun" RenderTransformOrigin="0.519,0.462"/>
-        <ComboBox x:Name="cmbDate" HorizontalAlignment="Left" Margin="386,250,0,0" VerticalAlignment="Top" Width="162"/>
+        <ComboBox x:Name="cmbDate" HorizontalAlignment="Left" Margin="386,250,0,0" VerticalAlignment="Top" Width="162" SelectionChanged="cmbDate_SelectionChanged"/>
         <Button x:Name="btnClearSelection" Content="Clear Selection" HorizontalAlignment="Left" Margin="240,414,0,0" VerticalAlignment="Top" Width="162" Height="42" FontFamily="SimSun" FontSize="16"/>
         <Label Content="Total Charge" HorizontalAlignment="Left" Margin="294,297,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="SimSun" RenderTransformOrigin="0.519,0.462"/>
-        <ComboBox x:Name="cmbTotalCharge" HorizontalAlignment="Left" Margin="428,301,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="cmbTotalCharge" HorizontalAlignment="Left" Margin="428,301,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cmbTotalCharge_SelectionChanged"/>
         <Button x:Name="btnSelectInvoice" Content="Select Invoice" HorizontalAlignment="Left" Margin="418,414,0,0" VerticalAlignment="Top" Width="162" Height="42" FontFamily="SimSun" FontSize="16"/>
 
     </Grid>

@@ -20,6 +20,60 @@ namespace GroupProjectWPF.Search
             sConnectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =|DataDirectory|\Store.accdb";
         }
 
+        public DataSet GetWhereX(String x)
+        {
+            String sSQL = "SELECT * from Invoices where " + x;
+            DataSet ds = new DataSet();
+
+            using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+            {
+                using (OleDbDataAdapter adapter = new OleDbDataAdapter())
+                {
+                    //Open connection
+                    conn.Open();
+
+                    //Add the inforamation for the SelectCommand
+                    adapter.SelectCommand = new OleDbCommand(sSQL, conn);
+                    adapter.SelectCommand.CommandTimeout = 0;
+
+                    //Fill up DataSet with data
+                    adapter.Fill(ds);
+
+                }
+            }
+
+            //Return DataSet
+            return ds;
+
+        }
+
+        public DataSet GetIDWhereX(String x)
+        {
+            String sSQL = "SELECT InvoiceID from Invoices where " + x;
+            DataSet ds = new DataSet();
+
+            using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+            {
+                using (OleDbDataAdapter adapter = new OleDbDataAdapter())
+                {
+                    //Open connection
+                    conn.Open();
+
+                    //Add the inforamation for the SelectCommand
+                    adapter.SelectCommand = new OleDbCommand(sSQL, conn);
+                    adapter.SelectCommand.CommandTimeout = 0;
+
+                    //Fill up DataSet with data
+                    adapter.Fill(ds);
+
+                }
+            }
+
+            //Return DataSet
+            return ds;
+
+        }
+
         public DataSet GetInvoices()
         {
            
@@ -52,7 +106,8 @@ namespace GroupProjectWPF.Search
         public List<String> GetInvoiceItems(int invoiceID)
         {
             List<String> items = new List<string>();
-            String cmdText = "SELECT * FROM Invoices WHERE InvoiceID=" + invoiceID;
+            String str = "";
+            String cmdText = "SELECT ItemName FROM (Items INNER JOIN Invoices ON Items.ItemID = Invoices.ItemID) WHERE InvoiceID=" + invoiceID;
 
             using (OleDbConnection con = new OleDbConnection(sConnectionString))
             {
@@ -63,12 +118,7 @@ namespace GroupProjectWPF.Search
                     OleDbDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        string str = string.Join(Environment.NewLine, rdr.GetString(0).ToString());
-                        Console.WriteLine(rdr.GetString(0).ToString());
-                        Console.WriteLine(rdr.GetString(0));
-                        Console.WriteLine(str);
-                        Console.WriteLine(rdr.GetString(0));
-
+                        str = rdr["ItemName"].ToString();
                        items.Add(str);
                     }
                     
@@ -82,9 +132,9 @@ namespace GroupProjectWPF.Search
 
         public double GetItemPrice(String item)
         {
-            try
-            {
-                String sSQL = "SELECT ItemPrice from Items where ItemName LIKE *" + item + "*";
+           // try
+           // {
+                String sSQL = "SELECT ItemPrice from Items where ItemID =" +  item ;
                 DataSet ds = new DataSet();
 
                 using (OleDbConnection conn = new OleDbConnection(sConnectionString))
@@ -107,11 +157,11 @@ namespace GroupProjectWPF.Search
                 double price = Convert.ToDouble(ds.Tables[0].Rows[0][0].ToString());
                 //Return DataSet
                 return price;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+               // throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name);
+           // }
         }
     }
 }
