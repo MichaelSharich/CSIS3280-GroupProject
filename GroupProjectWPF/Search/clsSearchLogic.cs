@@ -11,10 +11,122 @@ namespace GroupProjectWPF.Search
     {
         clsSearchSQL sql = new clsSearchSQL();
         List<String> FilteredList = new List<String>();
+        List<Invoice> invoices = new List<Invoice>();
 
         public clsSearchLogic()
         {
+            invoices = this.GetActiveInvoices();
+        }
 
+        public void FilterInvoice(String inv)
+        {
+            List<Invoice> tempinv = new List<Invoice>();
+            foreach (Invoice i in invoices)
+            {
+                if(Convert.ToString(i.InvoiceID).Equals(inv))
+                {
+                    tempinv.Add(i);
+                }
+            }
+            invoices = tempinv;
+        }
+
+        public void FilterDate(String inv)
+        {
+            List<Invoice> tempinv = new List<Invoice>();
+            foreach (Invoice i in invoices)
+            {
+                if((i.InvoiceDate.Equals(inv)))
+                {
+                    tempinv.Add(i);
+                }
+            }
+            invoices = tempinv;
+        }
+
+        public void FilterTotal(double inv)
+        {
+            List<Invoice> tempinv = new List<Invoice>();
+            foreach (Invoice i in invoices)
+            {
+                if (i.TotalPrice == inv)
+                {
+                    tempinv.Add(i);
+                }
+            }
+            invoices = tempinv;
+        }
+
+        public List<String> GettxtInvoices()
+        {
+            List<String> strs = new List<String>();
+            foreach(Invoice i in invoices)
+            {
+                strs.Add(i.InvoiceID + " " + i.InvoiceDate + " " + i.ItemID + " " + i.OrderItem);
+            }
+
+            return strs;
+        }
+
+        public List<String> GetcmbInvoices()
+        {
+            List<String> strs = new List<String>();
+            foreach (Invoice i in invoices)
+            {
+                strs.Add(i.InvoiceID + "");
+            }
+
+            return strs;
+        }
+
+        public List<String> GetcmbDates()
+        {
+            List<String> strs = new List<String>();
+            foreach (Invoice i in invoices)
+            {
+                strs.Add(i.InvoiceDate);
+            }
+
+            return strs;
+        }
+
+        public List<String> GetcmbTotals()
+        {
+            List<String> strs = new List<String>();
+            foreach (Invoice i in invoices)
+            {
+                strs.Add(i.TotalPrice + "");
+            }
+
+            return strs;
+        }
+
+        public List<Invoice> GetActiveInvoices()
+        {
+            List<Invoice> invoices = new List<Invoice>();
+            DataSet ds = sql.GetInvoices();
+
+            int iUNum = 0;
+            int iNum = 0;
+            String iDate = "";
+            double totalPrice;
+            int itemID = 0;
+            String OrderItem = "";
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                iUNum = Convert.ToInt32(ds.Tables[0].Rows[i][0].ToString());
+                iNum = Convert.ToInt32(ds.Tables[0].Rows[i][1].ToString());
+                iDate = ds.Tables[0].Rows[i][2].ToString();
+                totalPrice = this.GetInvoiceTotal(Convert.ToString(iNum));
+                itemID = Convert.ToInt32(ds.Tables[0].Rows[i][4].ToString());
+                OrderItem = ds.Tables[0].Rows[i][5].ToString();
+
+                Invoice inv = new Invoice(iUNum, iNum, iDate, totalPrice, itemID, OrderItem);
+                invoices.Add(inv);
+            }
+
+            return invoices;
         }
 
         public List<String> GetInvoicesWhere(String x)
