@@ -7,7 +7,14 @@
         mc:Ignorable="d"
         Title="wndMain" Height="450" Width="800">
     <Grid>
-        <Button Content="Search" HorizontalAlignment="Left" Height="39" Margin="101,255,0,0" VerticalAlignment="Top" Width="100" FontFamily="SimSun" FontSize="16" Click="Button_Click"/>
+        <Menu HorizontalAlignment="Left" Height="43" Margin="250,10,0,0" VerticalAlignment="Top" Width="230">
+            <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="100" FontFamily="SimSun" FontSize="16" Click="btnSearch_Click" FontWeight="Bold"/>
+            <Button x:Name="btnUpdate" Content="Update def" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="100" FontFamily="SimSun" FontSize="16" Click="btnUpdate_Click" FontWeight="Bold"/>
+        </Menu>
+        <DataGrid x:Name="dataGridView1" HorizontalAlignment="Left" Height="325" Margin="395,70,0,0" VerticalAlignment="Top" Width="300"/>
+        <Button x:Name="btnCreate" Content="Create Invoice" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="150" FontFamily="SimSun" FontSize="16" Click="btnCreate_Click" Margin="10,70,0,0"/>
+        <Button x:Name="btnEdit" Content="Edit Invoice" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="150" FontFamily="SimSun" FontSize="16" Click="btnEdit_Click" Margin="10,178,0,0"/>
+        <Button x:Name="btnDelete" Content="Delete Invoice" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="150" FontFamily="SimSun" FontSize="16" Click="btnDelete_Click" Margin="10,286,0,0"/>
 
     </Grid>
 </Window>
