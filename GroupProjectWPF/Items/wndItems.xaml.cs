@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,37 +18,37 @@ using System.Windows.Shapes;
 namespace GroupProjectWPF.Items
 {
     /// <summary>
-    /// Interaction logic for Items.xaml
+    /// Interaction logic for wndItems.xaml
     /// </summary>
-    public partial class Items : Window
+    public partial class wndItems : Window
     {
-        // this file will pass in the clsItemLogic class so we can access the public methods, we do this by creating a clsItemLogic variable.
+        clsItemsLogic itemLogic;
+        clsItemsSQL SQL;
+        clsItems Item;
+        bool IsDeleting = false;
+        DataSet ds;
+        string itemid;
+        int itemprice;
+        string itemdesc;
 
-        public Items()
+        public wndItems()
         {
             InitializeComponent();
-
-            // we initialize the clsItemLogic variable within the constructor.
+            // Make sure to include this line of code or the application will not close, because windows are still in memory.
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            itemLogic = new clsItemsLogic();
+            Item = new clsItems();
+            SQL = new clsItemsSQL();
+            ds = SQL.getItems();
+            fillDataGrid();
         }
 
-        /// <summary>
-        /// This method is to add data to the datagrid.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void fillDataGrid()
         {
-            try
-            {
-                // This method will call the AllItems() method so we can display the items within the data grid.
-            }
-            catch (Exception ex)
-            {
-                //This is the top level method so we want to handle the exception
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                            MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
+            ListOfItemsDG.ItemsSource = itemLogic.AllItems();
+            ListOfItemsDG.Columns[0].Visibility = Visibility.Hidden;
         }
+
 
         /// <summary>
         /// This method is to add a new item to the datagrid.
@@ -97,9 +99,20 @@ namespace GroupProjectWPF.Items
         {
             try
             {
-                // This method will call the GetItem() method so the user knows what item is being Deleted.
-                // This method will call the CanBeDeleted() method to check and make sure the item is not already in an invoice
-                // This method will call the DeleteItem() method so the user can delete an item from the datagrid/database.
+                if (ListOfItemsDG.CurrentCell != null)
+                {
+                    int iRowNum = ListOfItemsDG.Items.IndexOf(ListOfItemsDG.CurrentItem);
+
+                    IsDeleting = true;
+
+                    ds.Tables[0].Rows[iRowNum].Delete();
+
+                    ds.AcceptChanges();
+
+                    ListOfItemsDG.ItemsSource = itemLogic.DeleteItem(iRowNum.ToString());
+
+                    IsDeleting = false;
+                }
             }
             catch (Exception ex)
             {
@@ -119,7 +132,7 @@ namespace GroupProjectWPF.Items
             try
             {
                 // this method is used to make sure that the user has entered in a valid item.
-                return;
+                return true;
             }
             catch (Exception ex)
             {
@@ -138,7 +151,7 @@ namespace GroupProjectWPF.Items
             try
             {
                 // this method is used to make sure that the user can delete an item from the datagrid, this method also checks if the item is already in an invoice.
-                return;
+                return true;
             }
             catch (Exception ex)
             {
@@ -167,5 +180,59 @@ namespace GroupProjectWPF.Items
             }
         }
 
+        /*private string getItemText()
+        {
+            string addedItem = ItemIDTextBox.Text;
+            return addedItem;
+        }*/
+
+        private void AddNewItemBtn_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                itemid = ItemIDTextBox.Text;
+                itemprice = Convert.ToInt32(CostTextBox.Text);
+                itemdesc = DescriptionTextBox.Text;
+
+                ListOfItemsDG.ItemsSource = itemLogic.AddItem(itemid, itemprice, itemdesc);
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        private void ListOfItemsDG_CurrentCellChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ListOfItemsDG.CurrentCell != null)
+                {
+                    if (IsDeleting == false)
+                    {
+                        int rowIndex = ListOfItemsDG.Items.IndexOf(ListOfItemsDG.CurrentItem);
+
+                        if (rowIndex < ds.Tables[0].Rows.Count)
+                        {
+                            costTextBox.Text = ds.Tables[0].Rows[rowIndex][1].ToString();
+                            descriptionTextBox.Text = ds.Tables[0].Rows[rowIndex].ItemArray[2].ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        private void UpdateItemBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

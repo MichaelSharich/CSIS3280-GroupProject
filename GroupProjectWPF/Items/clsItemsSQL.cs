@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,19 +12,43 @@ namespace GroupProjectWPF.Items
 {
     class clsItemsSQL
     {
-        //Pass in the database class.
+        private string sConnectionString;
 
+        public clsItemsSQL()
+        {
+            sConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source =" + Directory.GetCurrentDirectory() + "\\Store.accdb";
+        }
         /// <summary>
         /// This SQL statement gets all the items from the database.
         /// </summary>
         /// <returns>All Items</returns>
-        public string getItems()
+        public DataSet getItems()
         {
             // This try catch block, checks for exceptions and then raises them.
             try
             {
-                string sSQL1 = "select ItemCode, ItemDesc, Cost from ItemDesc";
-                return sSQL1;
+                String sSQL1 = "select ItemID, ItemPrice, ItemDescription from Items";
+                DataSet ds = new DataSet();
+
+                using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+                {
+                    using (OleDbDataAdapter adapter = new OleDbDataAdapter())
+                    {
+                        //Open connection
+                        conn.Open();
+
+                        //Add the inforamation for the SelectCommand
+                        adapter.SelectCommand = new OleDbCommand(sSQL1, conn);
+                        adapter.SelectCommand.CommandTimeout = 0;
+
+                        //Fill up DataSet with data
+                        adapter.Fill(ds);
+
+                    }
+                }
+
+                //Return DataSet
+                return ds;
             }
             catch (Exception ex)
             {
@@ -78,17 +105,30 @@ namespace GroupProjectWPF.Items
         /// <summary>
         /// Inserts an item into the database.
         /// </summary>
-        /// <param name="sCode"></param>
+        /// <param name="sItemID"></param>
         /// <param name="sDesc"></param>
         /// <param name="sCost"></param>
         /// <returns>Inserts item</returns>
-        public string insertItem(string sCode, string sDesc, string sCost)
+        public int insertItem(string sItemName, string sItemID, int sCost, string sDesc)
         {
             // This try catch block, checks for exceptions and then raises them.
             try
             {
-                string sSQL4 = "Insert into ItemDesc(ItemCode, ItemDesc, Cost) Values = " + (sCode, sDesc, sCost);
-                return sSQL4;
+                string sSQL4 = "Insert into Items(ItemID, ItemPrice, ItemDescription) Values = ('" + sItemName + "' + '" + sItemID + "' ," + sCost + ", '" + sDesc + "')";
+                int iNumRows;
+
+                using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+                {
+                    conn.Open();
+
+                    OleDbCommand cmd = new OleDbCommand(sSQL4, conn);
+                    cmd.CommandTimeout = 0;
+
+                    iNumRows = cmd.ExecuteNonQuery();
+                }
+
+                return iNumRows;
+              
             }
             catch (Exception ex)
             {
@@ -103,13 +143,25 @@ namespace GroupProjectWPF.Items
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public string deleteItem(string code)
+        public int deleteItem(string code)
         {
             // This try catch block, checks for exceptions and then raises them.
             try
             {
-                string sSQL5 = " Delete from ItemDesc Where ItemCode = " + code;
-                return sSQL5;
+                string sSQL5 = " Delete from Items Where ItemID = " + code;
+                int iNumRows;
+
+                using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+                {
+                    conn.Open();
+
+                    OleDbCommand cmd = new OleDbCommand(sSQL5, conn);
+                    cmd.CommandTimeout = 0;
+
+                    iNumRows = cmd.ExecuteNonQuery();
+                }
+
+                return iNumRows;
             }
             catch (Exception ex)
             {
