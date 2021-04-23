@@ -8,16 +8,13 @@ namespace GroupProjectWPF.Search
 {
     class Invoice
     {
-        public int UniqueID = 0;
-        public int InvoiceID = 0;
-        public String InvoiceDate = "";
-        public double TotalPrice = 0;
-        public int ItemID = 0;
-        public String OrderItem;
-        public Invoice()
-        {
+        public int UniqueID { get; set; }
+        public int InvoiceID { get; set; }
+        public String InvoiceDate { get; set; }
+        public double TotalPrice { get; set; }
+        public int ItemID { get; set; }
+        public String OrderItem { get; set; }
 
-        }
         public Invoice(int uid, int iid, String d, double tp, int itID, String oItem)
         {
              UniqueID = uid;

@@ -10,8 +10,7 @@ namespace GroupProjectWPF.Search
     class clsSearchLogic
     {
         clsSearchSQL sql = new clsSearchSQL();
-        List<String> FilteredList = new List<String>();
-        List<Invoice> invoices = new List<Invoice>();
+        public List<Invoice> invoices = new List<Invoice>();
 
         public clsSearchLogic()
         {
@@ -119,8 +118,8 @@ namespace GroupProjectWPF.Search
                 iNum = Convert.ToInt32(ds.Tables[0].Rows[i][1].ToString());
                 iDate = ds.Tables[0].Rows[i][2].ToString();
                 totalPrice = this.GetInvoiceTotal(Convert.ToString(iNum));
-                itemID = Convert.ToInt32(ds.Tables[0].Rows[i][4].ToString());
-                OrderItem = ds.Tables[0].Rows[i][5].ToString();
+                itemID = Convert.ToInt32(ds.Tables[0].Rows[i][4]);
+                OrderItem = Convert.ToString(ds.Tables[0].Rows[i][5].ToString());
 
                 Invoice inv = new Invoice(iUNum, iNum, iDate, totalPrice, itemID, OrderItem);
                 invoices.Add(inv);

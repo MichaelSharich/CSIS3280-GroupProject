@@ -13,11 +13,11 @@ namespace GroupProjectWPF.Search
 {
     class clsSearchSQL
     {
-        private string sConnectionString;
+        private string StoreConnectionString;
 
         public clsSearchSQL()
         {
-            sConnectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =|DataDirectory|\Store.accdb";
+            StoreConnectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =|DataDirectory|\Store.accdb";
         }
 
         public DataSet GetWhereX(String x)
@@ -25,7 +25,7 @@ namespace GroupProjectWPF.Search
             String sSQL = "SELECT * from Invoices where " + x;
             DataSet ds = new DataSet();
 
-            using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+            using (OleDbConnection conn = new OleDbConnection(StoreConnectionString))
             {
                 using (OleDbDataAdapter adapter = new OleDbDataAdapter())
                 {
@@ -52,7 +52,7 @@ namespace GroupProjectWPF.Search
             String sSQL = "SELECT InvoiceID from Invoices where " + x;
             DataSet ds = new DataSet();
 
-            using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+            using (OleDbConnection conn = new OleDbConnection(StoreConnectionString))
             {
                 using (OleDbDataAdapter adapter = new OleDbDataAdapter())
                 {
@@ -80,7 +80,7 @@ namespace GroupProjectWPF.Search
                 String sSQL = "SELECT * from Invoices";
                 DataSet ds = new DataSet();
 
-                using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+                using (OleDbConnection conn = new OleDbConnection(StoreConnectionString))
                 {
                     using (OleDbDataAdapter adapter = new OleDbDataAdapter())
                     {
@@ -109,7 +109,7 @@ namespace GroupProjectWPF.Search
             String str = "";
             String cmdText = "SELECT ItemName FROM (Items INNER JOIN Invoices ON Items.ItemID = Invoices.ItemID) WHERE InvoiceID=" + invoiceID;
 
-            using (OleDbConnection con = new OleDbConnection(sConnectionString))
+            using (OleDbConnection con = new OleDbConnection(StoreConnectionString))
             {
                 con.Open();
                 using (OleDbCommand cmd = new OleDbCommand(cmdText))
@@ -137,7 +137,7 @@ namespace GroupProjectWPF.Search
                 String sSQL = "SELECT ItemPrice from Items where ItemID =" +  item ;
                 DataSet ds = new DataSet();
 
-                using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+                using (OleDbConnection conn = new OleDbConnection(StoreConnectionString))
                 {
                     using (OleDbDataAdapter adapter = new OleDbDataAdapter())
                     {

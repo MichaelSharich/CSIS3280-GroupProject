@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,6 +23,8 @@ namespace GroupProjectWPF.Search
     {
         clsSearchLogic logic = new clsSearchLogic();
         List<Invoice> display = new List<Invoice>();
+        ObservableCollection<Invoice> oInv = new ObservableCollection<Invoice>();
+        Invoice SelectedInvoice;
         bool chInvoice = false;
         bool chDate = false;
         bool chTotal = false;
@@ -29,25 +33,31 @@ namespace GroupProjectWPF.Search
         {
             InitializeComponent();
 
+            datGrid.ItemsSource = logic.GetActiveInvoices();
+            SelectedInvoice = logic.invoices.ElementAt(0);
+
             PopulateCmbo();
             PopulateTxtBox();
-        }
 
+        }  
 
         public void PopulateCmbo()
         {
-            txtInvoices.ItemsSource = logic.GettxtInvoices();
+
+            datGrid.ItemsSource = logic.invoices;
 
             cmbInvoiceNum.ItemsSource = logic.GetcmbInvoices();
 
             cmbDate.ItemsSource = logic.GetcmbDates();
 
             cmbTotalCharge.ItemsSource = logic.GetcmbTotals();
+
+            
         }
 
         public void PopulateTxtBox()
         {
-            txtInvoices.ItemsSource = logic.GetActiveInvoices();
+            //datGrid.ItemsSource = display;
         }
 
         private void cmbInvoiceNum_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -110,6 +120,16 @@ namespace GroupProjectWPF.Search
 
             PopulateCmbo();
             PopulateTxtBox();
+        }
+
+
+
+        private void SelectInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedInvoice = (Invoice) datGrid.SelectedItem;
+
+            //Pass SelectedInvoice to wndMain
+            //this.Close();
         }
     }
 }
