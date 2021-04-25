@@ -1,6 +1,4 @@
-﻿using GroupProjectWPF.Search;
-using GroupProjectWPF.Items;
-using System;
+﻿using System;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Reflection;
+using GroupProjectWPF.Search;
+using GroupProjectWPF.Items;
 
 namespace GroupProjectWPF.Main
 {
-    /// <summary>
-    /// Interaction logic for wndMain.xaml
-    /// </summary>
     public partial class wndMain : Window
     {
-        #region attributes
         /// <summary>
         /// Connection to the database
         /// </summary>
@@ -58,10 +54,8 @@ namespace GroupProjectWPF.Main
         //Grants access to the list of invoices
         List<Invoice> invoices;
 
-        #endregion
-        /// <summary>
-        /// Initializes the window
-        /// </summary>
+        Invoice curInv;
+
         public wndMain()
         {
             try
@@ -78,6 +72,7 @@ namespace GroupProjectWPF.Main
                 invoices = new List<Invoice>();
 
                 DataSet ds = new DataSet();
+                update();
             }
             catch (Exception ex)
             {
@@ -85,6 +80,28 @@ namespace GroupProjectWPF.Main
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
+        }
+
+        public Invoice GetCurrentInvoice()
+        {
+            return curInv;
+        }
+
+        public void SetCurrentInvoice(Invoice inv)
+        {
+            curInv = inv;
+        }
+
+        public void update()
+        {
+            if(txtInvoiceNum.Text == "" || txtInvoicePrice.Text == "" ||
+                txtInvoicePrice.Text == "" || txtInvoicePrice.Text == "")
+            {
+                return;
+            }
+            txtInvoiceNum.Text = curInv.InvoiceID.ToString();
+            txtInvoicePrice.Text = curInv.TotalPrice.ToString();
+
         }
 
         /// <summary>
