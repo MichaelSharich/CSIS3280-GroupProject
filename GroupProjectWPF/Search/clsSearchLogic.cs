@@ -7,11 +7,20 @@ using System.Threading.Tasks;
 
 namespace GroupProjectWPF.Search
 {
+    /// <summary>
+    /// class clsSearchLogic - 
+    ///             Use clsSearchSQL class to get results from queries
+    /// </summary>
     class clsSearchLogic
     {
+        // Instantiate clsSearchSQL for searching
         clsSearchSQL sql = new clsSearchSQL();
+        // static invoices list
         public List<Invoice> invoices = new List<Invoice>();
 
+        /// <summary>
+        /// public clsSearchLogic() - Constructor 
+        /// </summary>
         public clsSearchLogic()
         {
             invoices = this.GetActiveInvoices();
@@ -54,17 +63,6 @@ namespace GroupProjectWPF.Search
                 }
             }
             invoices = tempinv;
-        }
-
-        public List<String> GettxtInvoices()
-        {
-            List<String> strs = new List<String>();
-            foreach(Invoice i in invoices)
-            {
-                strs.Add(i.InvoiceID + " " + i.InvoiceDate + " " + i.ItemID + " " + i.OrderItem);
-            }
-
-            return strs;
         }
 
         public List<String> GetcmbInvoices()
@@ -124,75 +122,6 @@ namespace GroupProjectWPF.Search
                 Invoice inv = new Invoice(iUNum, iNum, iDate, totalPrice, itemID, OrderItem);
                 invoices.Add(inv);
             }
-
-            return invoices;
-        }
-
-        public List<String> GetInvoicesWhere(String x)
-        {
-            List<String> invoices = new List<String>();
-            DataSet ds = sql.GetWhereX(x);
-            int iNum = 0;
-            String iDate = "";
-            List<String> items = new List<String>();
-            String allItems = "";
-
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-                iNum = Convert.ToInt32(ds.Tables[0].Rows[i][1].ToString());
-                iDate = ds.Tables[0].Rows[i][2].ToString();
-                items = sql.GetInvoiceItems(iNum);
-                foreach (String item in items)
-                {
-                    allItems += item + " ";
-                }
-                invoices.Add(iNum + " " + iDate + " " + allItems);
-                allItems = "";
-            }
-
-
-            return invoices;
-        }
-
-        public List<String> GetInvoicesIDSWhere(String x)
-        {
-            List<String> invoices = new List<String>();
-            DataSet ds = sql.GetIDWhereX(x);
-            int iNum = 0;
-            String iDate = "";
-            List<String> items = new List<String>();
-            String allItems = "";
-
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-                iNum = Convert.ToInt32(ds.Tables[0].Rows[i][1].ToString());
-                invoices.Add(Convert.ToString(iNum));
-            }
-
-            return invoices;
-        }
-
-        public List<String> GetTotalCostList()
-        {
-            List<String> invoices = new List<String>();
-            DataSet ds = sql.GetInvoices();
-            List<Tuple<String, int>> Entries = new List<Tuple<String, int>>();
-
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-                Entries.Add(new Tuple<String, int>(ds.Tables[0].Rows[i][1].ToString(), Convert.ToInt32(ds.Tables[0].Rows[i][4].ToString())));
-            }
-
-            double total = 0;
-            foreach (Tuple<String, int> d in Entries)
-            {
-                if (!invoices.Contains(d.Item1)){
-                    total = GetInvoiceTotal(d.Item1);
-                    String str = d.Item1 + " - " + total;
-                    invoices.Add(str);
-                }
-            }
-            invoices = invoices.Distinct().ToList();
 
             return invoices;
         }
