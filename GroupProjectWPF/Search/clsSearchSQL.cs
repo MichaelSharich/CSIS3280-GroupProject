@@ -118,14 +118,16 @@ namespace GroupProjectWPF.Search
         /// <summary>
         /// public double GetItemPrice(String item) :
         /// 
-        ///             
+        ///             Get item price for specific item
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
         public double GetItemPrice(String item)
         {
             try {
+                // SQL query to execute
                 String sSQL = "SELECT ItemPrice from Items where ItemID =" +  item ;
+                // Dataset for storing returned information
                 DataSet ds = new DataSet();
 
                 using (OleDbConnection conn = new OleDbConnection(StoreConnectionString))
@@ -145,6 +147,7 @@ namespace GroupProjectWPF.Search
                     }
                 }
 
+                // Set price
                 double price = Convert.ToDouble(ds.Tables[0].Rows[0][0].ToString());
                 //Return DataSet
                 return price;

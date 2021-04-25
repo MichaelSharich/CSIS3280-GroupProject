@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GroupProjectWPF.Search
 {
-    class Invoice
+    public class Invoice
     {
         public int UniqueID { get; set; }
         public int InvoiceID { get; set; }

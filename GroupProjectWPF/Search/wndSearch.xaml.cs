@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GroupProjectWPF.Main;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -265,15 +266,18 @@ namespace GroupProjectWPF.Search
             {
                 //Set selected invoice
                 SelectedInvoice = (Invoice)datGrid.SelectedItem;
+
+                wndMain w = new wndMain();
+                w.SetCurrentInvoice(SelectedInvoice);
+
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name +
                             "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
-            //Pass SelectedInvoice to wndMain
-            //this.Close();
+            
+            
         }
     }
 }
