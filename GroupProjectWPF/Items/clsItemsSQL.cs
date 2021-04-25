@@ -27,7 +27,7 @@ namespace GroupProjectWPF.Items
             // This try catch block, checks for exceptions and then raises them.
             try
             {
-                String sSQL1 = "select ItemID, ItemPrice, ItemDescription from Items";
+                String sSQL1 = "select ItemID, ItemName, ItemPrice, ItemDescription from Items";
                 DataSet ds = new DataSet();
 
                 using (OleDbConnection conn = new OleDbConnection(sConnectionString))
@@ -58,26 +58,6 @@ namespace GroupProjectWPF.Items
 
         }
 
-        /// <summary>
-        /// This SQL statement gets a certain item from the database.
-        /// </summary>
-        /// <param name="sItem"></param>
-        /// <returns>A specific item</returns>
-        public string getItem(string sItem)
-        {
-            // This try catch block, checks for exceptions and then raises them.
-            try
-            {
-                string sSQL2 = "select distinct(InvoiceNum) from LineItems where ItemCode = " + sItem;
-                return sSQL2;
-            }
-            catch (Exception ex)
-            {
-                //This is the lower level method so we want to raise the exception.
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + "->" + ex.Message);
-            }
-            
-        }
 
         /// <summary>
         /// updates an item from the database.
@@ -86,13 +66,27 @@ namespace GroupProjectWPF.Items
         /// <param name="iCost"></param>
         /// <param name="iCode"></param>
         /// <returns>Update item</returns>
-        public string updateItem(string iDesc, string iCost, string iCode)
+        public void updateItem(string iDesc, string iCost, string ID)
         {
             // This try catch block, checks for exceptions and then raises them.
             try
             {
-                string sSQL3 = " Update ItemDesc Set ItemDesc = " + iDesc + "Cost = " + iCost + "where ItemCode = " + iCode;
-                return sSQL3;
+
+                string sSQL3 = "Update Items Set ItemDescription " + iDesc + ", ItemPrice = " + iCost + " where ItemID = " + ID;
+
+                using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+                {
+                    using (OleDbDataAdapter adapter = new OleDbDataAdapter())
+                    {
+                        //Open connection
+                        conn.Open();
+
+                        //Add the inforamation for the SelectCommand
+                        adapter.SelectCommand = new OleDbCommand(sSQL3, conn);
+                        adapter.SelectCommand.CommandTimeout = 0;
+
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -105,17 +99,16 @@ namespace GroupProjectWPF.Items
         /// <summary>
         /// Inserts an item into the database.
         /// </summary>
-        /// <param name="sItemID"></param>
+        /// <param name="sItemName"></param>
         /// <param name="sDesc"></param>
         /// <param name="sCost"></param>
         /// <returns>Inserts item</returns>
-        public int insertItem(string sItemName, string sItemID, int sCost, string sDesc)
+        public void insertItem(string sItemName, int sCost, string sDesc)
         {
             // This try catch block, checks for exceptions and then raises them.
             try
             {
-                string sSQL4 = "Insert into Items(ItemID, ItemPrice, ItemDescription) Values = ('" + sItemName + "' + '" + sItemID + "' ," + sCost + ", '" + sDesc + "')";
-                int iNumRows;
+                string sSQL4 = "Insert into Items (ItemName, ItemPrice, ItemDescription) Values ('" + sItemName + "', + '" + sCost + "', '" + sDesc + "')";
 
                 using (OleDbConnection conn = new OleDbConnection(sConnectionString))
                 {
@@ -124,10 +117,8 @@ namespace GroupProjectWPF.Items
                     OleDbCommand cmd = new OleDbCommand(sSQL4, conn);
                     cmd.CommandTimeout = 0;
 
-                    iNumRows = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
                 }
-
-                return iNumRows;
               
             }
             catch (Exception ex)

@@ -14,12 +14,12 @@
                     <ColumnDefinition Width="13*"/>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="AddNewItemBtn" Content="Add New Item" HorizontalAlignment="Left" Margin="257,49,0,0" VerticalAlignment="Top" Width="92" Height="36" Click="AddNewItemBtn_Click_1"/>
-                <Label x:Name="ItemIDLbl" Content="ItemID:" HorizontalAlignment="Left" Margin="25,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.308,0.076"/>
-                <Label x:Name="CostLbl" Content="Cost:" HorizontalAlignment="Left" Margin="37,54,0,0" VerticalAlignment="Top"/>
-                <Label x:Name="DescriptionLbl" Content="Description:" HorizontalAlignment="Left" Margin="0,98,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="DescriptionTextBox" HorizontalAlignment="Left" Height="23" Margin="88,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                <TextBox x:Name="CostTextBox" HorizontalAlignment="Left" Height="23" Margin="88,57,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                <TextBox x:Name="ItemIDTextBox" HorizontalAlignment="Left" Height="23" Margin="88,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                <Label x:Name="CostLbl" Content="Cost:" HorizontalAlignment="Left" Margin="37,46,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="DescriptionLbl" Content="Description:" HorizontalAlignment="Left" Margin="0,86,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="DescriptionTextBox" HorizontalAlignment="Left" Height="23" Margin="88,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                <TextBox x:Name="CostTextBox" HorizontalAlignment="Left" Height="23" Margin="88,49,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                <TextBox x:Name="ItemNameTextBox" HorizontalAlignment="Left" Height="23" Margin="88,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                <Label x:Name="NameLbl" Content="Item Name:" HorizontalAlignment="Left" Margin="2,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.447,0.192"/>
             </Grid>
         </GroupBox>
         <GroupBox x:Name="EditItemGB" Header="Edit Item" Margin="10,171,379,83">
@@ -32,9 +32,9 @@
             </Grid>
         </GroupBox>
 
-        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" x:Name="ListOfItemsDG" HorizontalAlignment="Left" Height="399" Margin="477,10,0,0" VerticalAlignment="Top" Width="274" CurrentCellChanged="ListOfItemsDG_CurrentCellChanged">
+        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" x:Name="ListOfItemsDG" HorizontalAlignment="Left" Height="399" Margin="477,10,0,0" VerticalAlignment="Top" Width="274" SelectionChanged="ListOfItemsDG_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Item ID" Binding="{Binding Path=ItemID}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Price" Binding="{Binding Path=ItemPrice}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Description" Binding="{Binding Path=ItemDescription}"></DataGridTextColumn>
             </DataGrid.Columns>

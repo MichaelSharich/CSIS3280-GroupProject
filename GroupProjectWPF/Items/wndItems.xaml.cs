@@ -27,9 +27,10 @@ namespace GroupProjectWPF.Items
         clsItems Item;
         bool IsDeleting = false;
         DataSet ds;
-        string itemid;
+        string itemname;
         int itemprice;
         string itemdesc;
+        bool no = false;
 
         public wndItems()
         {
@@ -45,8 +46,9 @@ namespace GroupProjectWPF.Items
 
         public void fillDataGrid()
         {
+            ListOfItemsDG.ItemsSource = "";
             ListOfItemsDG.ItemsSource = itemLogic.AllItems();
-            ListOfItemsDG.Columns[0].Visibility = Visibility.Hidden;
+            //ListOfItemsDG.Columns[0].Visibility = Visibility.Hidden;
         }
 
 
@@ -190,11 +192,15 @@ namespace GroupProjectWPF.Items
         {
             try
             {
-                itemid = ItemIDTextBox.Text;
+                itemname = ItemNameTextBox.Text;
                 itemprice = Convert.ToInt32(CostTextBox.Text);
                 itemdesc = DescriptionTextBox.Text;
 
-                ListOfItemsDG.ItemsSource = itemLogic.AddItem(itemid, itemprice, itemdesc);
+                itemLogic.AddItem(itemname, itemprice, itemdesc);
+
+                fillDataGrid();
+
+
             }
             catch (Exception ex)
             {
@@ -204,23 +210,27 @@ namespace GroupProjectWPF.Items
             }
         }
 
-        private void ListOfItemsDG_CurrentCellChanged(object sender, EventArgs e)
+        private void ListOfItemsDG_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (costTextBox.IsFocused || descriptionTextBox.IsFocused)
+            {
+                return;
+            }
+            if(no == true)
+            {
+                return;
+            }
+
             try
             {
-                if (ListOfItemsDG.CurrentCell != null)
-                {
-                    if (IsDeleting == false)
-                    {
-                        int rowIndex = ListOfItemsDG.Items.IndexOf(ListOfItemsDG.CurrentItem);
+                ds = SQL.getItems();
 
-                        if (rowIndex < ds.Tables[0].Rows.Count)
-                        {
-                            costTextBox.Text = ds.Tables[0].Rows[rowIndex][1].ToString();
-                            descriptionTextBox.Text = ds.Tables[0].Rows[rowIndex].ItemArray[2].ToString();
-                        }
-                    }
-                }
+                int rowIndex = ListOfItemsDG.SelectedIndex;
+
+                costTextBox.Text = ds.Tables[0].Rows[rowIndex][2].ToString();
+                descriptionTextBox.Text = ds.Tables[0].Rows[rowIndex].ItemArray[3].ToString();
+
+               
             }
             catch (Exception ex)
             {
@@ -232,7 +242,20 @@ namespace GroupProjectWPF.Items
 
         private void UpdateItemBtn_Click(object sender, RoutedEventArgs e)
         {
+            no = true;
+            ds = SQL.getItems();
 
+            clsItems item = new clsItems();
+            item = (clsItems) ListOfItemsDG.SelectedItem;
+
+            clsItems test = new clsItems(item.ID, item.Name, costTextBox.Text, descriptionTextBox.Text);
+
+            itemLogic.EditItem(test);
+
+            fillDataGrid();
+
+            no = false;
         }
+
     }
 }

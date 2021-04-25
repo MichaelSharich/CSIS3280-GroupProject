@@ -32,6 +32,7 @@ namespace GroupProjectWPF.Items
         // then once the items are added to the list, return the list.
         public List<clsItems> AllItems()
         {
+            Items.Clear();
             try
             {
                 SQL = new clsItemsSQL();
@@ -41,9 +42,11 @@ namespace GroupProjectWPF.Items
                 for(int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     Current = new clsItems();
-                    Current.ItemID = ds.Tables[0].Rows[i][0].ToString();
-                    Current.ItemPrice = ds.Tables[0].Rows[i][1].ToString();
-                    Current.ItemDescription = ds.Tables[0].Rows[i][2].ToString();
+                    Current.ID = ds.Tables[0].Rows[i][0].ToString();
+                    Current.Name = ds.Tables[0].Rows[i][1].ToString();
+                    Current.ItemPrice = ds.Tables[0].Rows[i][2].ToString();
+                    Current.ItemDescription = ds.Tables[0].Rows[i][3].ToString();
+
                     Items.Add(Current);
 
                 }
@@ -58,7 +61,7 @@ namespace GroupProjectWPF.Items
         }
 
         //Create a method called AddItem that will add an item to the datagrid
-        public List<clsItems> AddItem(string name,string id, int price, string desc)
+        public List<clsItems> AddItem(string name, int price, string desc)
         {
             try
             {
@@ -66,12 +69,12 @@ namespace GroupProjectWPF.Items
                 DataSet ds = new DataSet();
                 clsItems Current;
                 int iRet = 0;
-                SQL.insertItem(name, id, price, desc);
+                SQL.insertItem(name, price, desc);
 
                 for (int i = 0; i < iRet; i++)
                 {
                     Current = new clsItems();
-                    Current.ItemID = ds.Tables[0].Rows[i][0].ToString();
+                    Current.Name = ds.Tables[0].Rows[i][0].ToString();
                     Current.ItemPrice = ds.Tables[0].Rows[i][1].ToString();
                     Current.ItemDescription = ds.Tables[0].Rows[i][2].ToString();
                     Items.Add(Current);
@@ -79,6 +82,7 @@ namespace GroupProjectWPF.Items
 
                 return Items;
             }
+            
             catch (Exception ex)
             {
                 //This is the lower level method so we want to raise the exception.
@@ -100,7 +104,7 @@ namespace GroupProjectWPF.Items
                 for (int i = 0; i < iRet; i++)
                 {
                     Current = new clsItems();
-                    Current.ItemID = ds.Tables[0].Rows[i][0].ToString();
+                    Current.Name = ds.Tables[0].Rows[i][0].ToString();
                     Items.Add(Current);
                 }
 
@@ -117,9 +121,19 @@ namespace GroupProjectWPF.Items
         // return the list with the added item.
 
         //Create a method called EditItem that will edit an existing item in the datagrid
-        public void EditItem()
+        public void EditItem(clsItems item)
         {
+            try
+            {
 
+                SQL.updateItem(item.ItemDescription, item.ItemPrice, item.ID);
+
+            }
+            catch (Exception ex)
+            {
+                //This is the lower level method so we want to raise the exception.
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + "->" + ex.Message);
+            }
         }
         // this method should create a list
         // this method will make sure that the description and cost will be the only editing factor

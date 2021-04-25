@@ -8,28 +8,36 @@ namespace GroupProjectWPF.Items
 {
     class clsItems
     {
-        private string itemID;
+        private string id;
+        private string name;
         private string itemPrice;
         private string itemDescription;
 
-        public clsItems(String id, String iprice, String iDesc)
+        public clsItems(String inID, String iname, String iprice, String iDesc)
         {
-            itemID = id;
+            id = inID;
+            name = iname;
             itemPrice = iprice;
             itemDescription = iDesc;
         }
 
         public clsItems()
         {
-            itemID = "";
+            id = "";
+            name = "";
             itemPrice = "";
             itemDescription = "";
         }
 
-        public string ItemID
+        public string ID
         {
-            get { return itemID; }
-            set { itemID = value; }
+            get { return id; }
+            set { id = value; }
+        }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
         }
 
         public string ItemPrice
