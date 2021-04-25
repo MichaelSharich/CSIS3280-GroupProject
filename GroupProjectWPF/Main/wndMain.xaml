@@ -5,16 +5,105 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GroupProjectWPF.Main"
         mc:Ignorable="d"
-        Title="wndMain" Height="450" Width="800">
+        Title="wndMain" Height="700" Width="950">
     <Grid>
-        <Menu HorizontalAlignment="Left" Height="43" Margin="250,10,0,0" VerticalAlignment="Top" Width="230">
-            <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="100" FontFamily="SimSun" FontSize="16" Click="btnSearch_Click" FontWeight="Bold"/>
-            <Button x:Name="btnUpdate" Content="Update def" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="100" FontFamily="SimSun" FontSize="16" Click="btnUpdate_Click" FontWeight="Bold"/>
-        </Menu>
-        <DataGrid x:Name="dataGridView1" HorizontalAlignment="Left" Height="325" Margin="395,70,0,0" VerticalAlignment="Top" Width="300"/>
-        <Button x:Name="btnCreate" Content="Create Invoice" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="150" FontFamily="SimSun" FontSize="16" Click="btnCreate_Click" Margin="10,70,0,0"/>
-        <Button x:Name="btnEdit" Content="Edit Invoice" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="150" FontFamily="SimSun" FontSize="16" Click="btnEdit_Click" Margin="10,178,0,0"/>
-        <Button x:Name="btnDelete" Content="Delete Invoice" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="150" FontFamily="SimSun" FontSize="16" Click="btnDelete_Click" Margin="10,286,0,0"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300*"/>
+            <ColumnDefinition Width="300*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300*"/>
+            <RowDefinition Height="300*"/>
+        </Grid.RowDefinitions>
+        <ToolBar Height="29" VerticalAlignment="Top">
+            <Menu x:Name="menuMain" DockPanel.Dock="Top">
+                <MenuItem x:Name="itemMenu" Header="_Menu">
+                    <MenuItem x:Name="itemSearch" Header="_Search for Invoice" Cursor="Hand" Click="itemSearch_Click"/>
+                    <MenuItem x:Name="itemTable" Header="_Edit Def Table" Cursor="Hand" Click="itemTable_Click"/>
+                </MenuItem>
+            </Menu>
+        </ToolBar>
+        <GroupBox x:Name="gbInvoiceInfo" Header="Invoice Information" HorizontalAlignment="Left" Height="243" Margin="100,34,0,0" VerticalAlignment="Top" Width="289">
+            <Grid x:Name="gbInvoiceInformation" Margin="0,2,-2,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="99*"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+
+                </Grid.RowDefinitions>
+                <Label x:Name="lblInvoiceNumMain" Content="Invoice Number: " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                <Button x:Name="btnDeleteMain" Content="Delete Invoice" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="120" Height="44" FontWeight="Bold" Grid.Column="1" Grid.Row="5" IsEnabled="False">
+                    <Button.Effect>
+                        <DropShadowEffect/>
+                    </Button.Effect>
+                </Button>
+                <Button x:Name="btnEditMain" Content="Edit Invoice" HorizontalAlignment="Left" VerticalAlignment="Top" Width="129" Height="44" FontWeight="Bold" Grid.Row="5" IsEnabled="False">
+                    <Button.Effect>
+                        <DropShadowEffect/>
+                    </Button.Effect>
+                </Button>
+                <Label x:Name="lblInvoiceDateMain" Content="Invoice Date: " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Grid.Row="1"/>
+                <TextBlock x:Name="tbDate" Grid.Column="1" HorizontalAlignment="Left" Margin="30,20,0,0" Grid.Row="1" TextWrapping="Wrap" Text="00/00/0000" VerticalAlignment="Top"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="gbManipulateInvoice" Header="Manipulate Invoice" HorizontalAlignment="Left" Height="301" Margin="151,23,0,0" VerticalAlignment="Top" Width="289" Grid.Row="1" 
+                  IsEnabled="False">
+            <Grid Margin="0,2,-2,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="99*"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="btnSaveInvoice" Content="Save Invoice" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="120" Height="44" FontWeight="Bold" Grid.Column="1" Grid.Row="1">
+                    <Button.Effect>
+                        <DropShadowEffect/>
+                    </Button.Effect>
+                </Button>
+                <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="0,71,0,0" VerticalAlignment="Top" Width="120" Height="44" FontWeight="Bold" Grid.Row="1"
+                        Click="btnCancel_Click">
+                    <Button.Effect>
+                        <DropShadowEffect/>
+                    </Button.Effect>
+                </Button>
+                <Label x:Name="lblInvoiceNumManipulate" Content="Invoice Number: " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                <TextBox x:Name="txtInvoiceNum" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderBrush="#FF0040FF" MaxLength="5" PreviewKeyDown="txtInvoiceNum_PreviewKeyDown">
+                    <TextBox.Effect>
+                        <DropShadowEffect/>
+                    </TextBox.Effect>
+                </TextBox>
+                <Label x:Name="lblInvoiceDateManipulate" Content="Invoice Date: " HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                <TextBox x:Name="txtInvoiceDat" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderBrush="#FF0040FF" MaxLength="10" PreviewKeyDown="txtInvoiceDate_PreviewKeyDown">
+                    <TextBox.Effect>
+                        <DropShadowEffect/>
+                    </TextBox.Effect>
+                </TextBox>
+                <Label x:Name="lblInvoiceItem" Content="Invoice Item: " HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="120"/>
+                <Label x:Name="lblInvoicePrice" Content="Invoice Price: " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Grid.Row="1"/>
+                <TextBox x:Name="txtInvoicePrice" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderBrush="#FF0040FF" MaxLength="10" PreviewKeyDown="txtInvoiceDate_PreviewKeyDown" Grid.Row="1" IsReadOnly="True">
+                    <TextBox.Effect>
+                        <DropShadowEffect/>
+                    </TextBox.Effect>
+                </TextBox>
+            </Grid>
+        </GroupBox>
+        <Button x:Name="btnCreateMain" Content="Create Invoice" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="102" Height="44" FontWeight="Bold" Grid.Row="1" 
+                Click="btnCreateMain_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Height="291" Margin="39,34,0,0" VerticalAlignment="Top" Width="357" CanUserAddRows="False"/>
+        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Height="291" Margin="39,23,0,0" VerticalAlignment="Top" Width="357" CanUserAddRows="False" Grid.Row="1"/>
+        <TextBlock x:Name="tbInNum" HorizontalAlignment="Left" Margin="276,73,0,0" TextWrapping="Wrap" Text="None" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
